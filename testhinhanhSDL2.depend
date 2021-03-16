@@ -1,6 +1,0 @@
-# depslib dependency file v1.0
-1615831867 source:c:\users\vo dinh huy\onedrive\documents\thay tuan\stdio_sdl\main.cpp
-	<iostream>
-	<SDL.h>
-	<SDL_image.h>
-
