@@ -4,6 +4,7 @@
 #include<string.h>
 #include <time.h>
 #include <math.h>
+
 //SDL_Texture* loadTexture(const string &file, SDL_Renderer *ren);
 
 
@@ -38,6 +39,7 @@ struct State {
     Block danban;
     bool bantrung;
 };
+void quitSDL(SDL_Window* window, SDL_Renderer* renderer);
 //----------------------------------
 void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y);
 //------------------------------
@@ -52,44 +54,123 @@ void run(SDL_Renderer *renderer, State &s);
 void update_state(State &s, double dt);
 
 int main(int argc, char* args[]) {
-
-
     State s;
     init_state(s, 0);
 
-    SDL_Window* window;
-    SDL_Renderer* rend;
+
+	SDL_Window* window = NULL;
+	SDL_Renderer* renderer = NULL;
+	SDL_Surface* tempSurface = NULL;
+	SDL_Texture* texture = NULL;
+	SDL_Event mainEvent;
+	SDL_Rect sourceRect;
+	SDL_Rect desRect;
+	bool isRunning = true;
+	//initializes  the subsystems
+	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
+	{
+		printf("Unable to initialize SDL %s\n", SDL_GetError());
+		return -1;
+	}
+
+	//Create window
+	window = SDL_CreateWindow("HUY GAME ", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,870, 600, SDL_WINDOW_SHOWN);
+	if (window == NULL)
+	{
+		printf("Could not create window %s", SDL_GetError());
+		return -1;
+	}
+	//create a renderer
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	if (renderer == NULL)
+	{
+		printf("Could not create render %s", SDL_GetError());
+		return -1;
+	}
+
+	//create a tempSurface
+	tempSurface = SDL_LoadBMP("theme2.bmp");
+	//create a texutre from surface
+	texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
+	//free surface
+	SDL_FreeSurface(tempSurface);
 
 
-    if ( SDL_Init(SDL_INIT_EVERYTHING) == -1 ) {
-        std::cout << " Failed to initialize SDL : " << SDL_GetError() << std::endl;
-        exit(1);
-    }
+	SDL_QueryTexture(texture, NULL, NULL, &sourceRect.w, &sourceRect.h);
+
+	sourceRect.x = 0;
+	sourceRect.y = 0;
+	sourceRect.w = sourceRect.w ;
+	sourceRect.h = sourceRect.h ;
+
+	desRect.x = 0;
+	desRect.y = 0;
+	desRect.w = sourceRect.w;
+	desRect.h = sourceRect.h;
+
+	//set background color
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+
+	//main loop
+	while (isRunning)
+	{
+
+		// clear the window to black
+		SDL_RenderClear(renderer);
+		//main event
+		while (SDL_PollEvent(&mainEvent))
+		{
+			switch (mainEvent.type)
+			{
+				//User - requested quit
+				case SDL_QUIT:
+				{
+					isRunning = false;
+					break;
+				}
+				default:
+				{
+					break;
+				}
+			}
+		}
+
+		// copy a portion of the texture to the current rendering target.
+		SDL_RenderCopy(renderer, texture, &sourceRect, &desRect);
+		//draw to the screen
+		SDL_RenderPresent(renderer);
 
 
-    window = SDL_CreateWindow("HUY GAME", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, s.w, s.h, SDL_WINDOW_SHOWN);
-    if (window == NULL) {
-        std::cout << "Failed to create window : " << SDL_GetError();
-        exit(1);
-    }
+	}
+    while (SDL_PollEvent(&mainEvent))
+		{
+			switch (mainEvent.type)
+			{
+				//User - requested quit
+				case SDL_SCANCODE_DOWN:
+				{
+					quitSDL(window, renderer);
+					break;
+				}
+				default:
+				{
+					break;
+				}
+			}
+		}
+    run(renderer, s);
 
-
-    rend = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    if (rend == NULL) {
-        std::cout << "Failed to create renderer : " << SDL_GetError();
-        exit(1);
-    }
-
-
-    SDL_RenderSetLogicalSize(rend, s.w, s.h);
-
-    run(rend, s);
+    //SDL_RenderSetLogicalSize(renderer, s.w, s.h);
 }
+///----------------------------------------------
+void quitSDL(SDL_Window* window, SDL_Renderer* renderer){
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+}
+///-----------------------------------------------
 
-
-void run(SDL_Renderer *rend, State &s) {
-
-
+void run(SDL_Renderer *renderer, State &s) {
 
     bool keep_running = true;
     while (keep_running) {
@@ -131,7 +212,7 @@ void run(SDL_Renderer *rend, State &s) {
         update_state(s, dt);
 
         /// vẽ
-        render(rend, s);
+        render(renderer, s);
 
         SDL_Delay(2);
 
@@ -172,13 +253,9 @@ void init_state(State &s, int stage) {
             if (size < enemy_size / 2) size = enemy_size / 2;
             s.quandich[index].b.size = size;
             // small shifts
-            s.quandich[index].b.y += rand() % (enemy_size - size + 1) / 2;
-            s.quandich[index].b.x += rand() % (enemy_size - size + 1) / 2  *
-                                    (rand()%2 * 2 - 1);
 
 
 }
-
 /// hàm kiểm tra chạm nhau
 bool collide(const Block &b1, const Block &b2) {
     return
@@ -267,10 +344,10 @@ void render(SDL_Renderer *rend, State &s) {
     }
 
     /// Player
-    draw_block(rend, s.PLAYER.b, 0, 0, 255, 0);
+    draw_block(rend, s.PLAYER.b, 255, 0, 0, 255);
 
     /// Bullet
-    draw_block(rend, s.danban, 255, 255, 0, 255);
+    draw_block(rend, s.danban, 255, 255, 0, 0);
 
     /// Stage number
     for (int i = 0; i < s.stage+1; i++) {
@@ -282,6 +359,4 @@ void render(SDL_Renderer *rend, State &s) {
     // Update the screen
     SDL_RenderPresent(rend);
 }
-
-
-
+///------------------------------
