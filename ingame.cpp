@@ -14,7 +14,7 @@ void quitSDL(SDL_Window* window, SDL_Renderer* renderer){
     SDL_Quit();
 }
 ///-----------------------------------------------
-void render(SDL_Renderer *rend, State &s) {
+void render(SDL_Renderer *rend, State &s,int coloring) {
     SDL_SetRenderDrawColor(rend, 0, 70, 130, 255);
     SDL_RenderClear(rend);///tach dan ban khoi keo dai
 
@@ -32,7 +32,9 @@ void render(SDL_Renderer *rend, State &s) {
 
 
     /// Player
-    draw_block(rend, s.PLAYER.b, 255, 0, 0, 255);
+    if(coloring == 0) draw_block(rend, s.PLAYER.b, 0, 153 , 255 , 255);
+
+    else draw_block(rend, s.PLAYER.b, 254 , 6 , 145 ,255);
 
     /// Bullet
     draw_block(rend, s.danban, 255, 255, 0, 0);
@@ -153,7 +155,7 @@ void update_state(State &s, double dt) {
 
 }
 ///-----------------------------------------------
-void run(SDL_Renderer *renderer, State &s) {
+void run(SDL_Renderer *renderer, State &s, int x ) {
 
     bool keep_running = true;
     while (keep_running) {
@@ -201,7 +203,7 @@ void run(SDL_Renderer *renderer, State &s) {
         update_state(s, dt);
 
         /// vẽ
-        render(renderer, s);
+        render(renderer, s,x);
 
         SDL_Delay(2);
 

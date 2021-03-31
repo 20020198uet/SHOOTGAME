@@ -5,11 +5,12 @@
 #include <time.h>
 #include <math.h>
 #include <string>
-const int coloring = 0;
+
 struct Block {
     double x;
     double y;
     int size;
+
 };
 
 struct kieuquandich {
@@ -20,6 +21,7 @@ struct kieuquandich {
 //--------------------------
 struct drawnguoichoi {
     Block b;
+    SDL_Color coloring;
 
 };
 //--------------------------
@@ -49,7 +51,7 @@ void draw_block(SDL_Renderer *r, Block &b);
 //----------------------------------
 void render(SDL_Renderer *renderer, State &s);
 //-----------------------------------
-void run(SDL_Renderer *renderer, State &s);
+void run(SDL_Renderer *renderer, State &s, int coloring);
 //-------------------------------------
 void update_state(State &s, double dt);
 ///-------------------------------

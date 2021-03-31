@@ -1,8 +1,8 @@
 # depslib dependency file v1.0
-1616253409 source:c:\users\vo dinh huy\onedrive\documents\ltnc\shootgame\main.cpp
+1617153782 source:c:\users\vo dinh huy\onedrive\documents\ltnc\shootgame\main.cpp
 	"ingame.h"
 
-1616253409 c:\users\vo dinh huy\onedrive\documents\ltnc\shootgame\ingame.h
+1617154063 c:\users\vo dinh huy\onedrive\documents\ltnc\shootgame\ingame.h
 	<SDL.h>
 	<SDL_image.h>
 	<iostream>
@@ -11,6 +11,6 @@
 	<math.h>
 	<string>
 
-1616238536 source:c:\users\vo dinh huy\onedrive\documents\ltnc\shootgame\ingame.cpp
+1617155208 source:c:\users\vo dinh huy\onedrive\documents\ltnc\shootgame\ingame.cpp
 	"ingame.h"
 

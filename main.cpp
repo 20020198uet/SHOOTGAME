@@ -61,6 +61,8 @@ int main(int argc, char* args[]) {
 	//set background color
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
+	int coloring = 0;
+
 	//main loop
 	isRunning = true;
 	while (isRunning)
@@ -79,6 +81,7 @@ int main(int argc, char* args[]) {
                     if (mainEvent.key.keysym.sym == SDLK_r){
                         //create a tempSurface
                         tempSurface = SDL_LoadBMP("blue_player.bmp");
+                        coloring = 0;
                         //create a texutre from surface
                         texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
                         //free surface
@@ -96,11 +99,15 @@ int main(int argc, char* args[]) {
                         desRect.w = sourceRect.w;
                         desRect.h = sourceRect.h;
 
+                        coloring = 0;
 
                     }
                     if (mainEvent.key.keysym.sym == SDLK_RIGHT){
                         //create a tempSurface
                         tempSurface = SDL_LoadBMP("pink_player.bmp");
+
+                        coloring = 1;
+
                         //create a texutre from surface
                         texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
                         //free surface
@@ -124,6 +131,7 @@ int main(int argc, char* args[]) {
                     if (mainEvent.key.keysym.sym == SDLK_LEFT){
                         //create a tempSurface
                         tempSurface = SDL_LoadBMP("blue_player.bmp");
+                        coloring = 0;
                         //create a texutre from surface
                         texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
                         //free surface
@@ -159,8 +167,9 @@ int main(int argc, char* args[]) {
 		SDL_RenderCopy(renderer, texture, &sourceRect, &desRect);
 		//draw to the screen
 		SDL_RenderPresent(renderer);
-	}
-	run(renderer, s);
+        }
+
+        run(renderer, s,coloring);
 
 
 }

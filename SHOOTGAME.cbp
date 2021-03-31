@@ -33,6 +33,7 @@
 		</Compiler>
 		<Unit filename="ingame.cpp" />
 		<Unit filename="ingame.h" />
+		<Unit filename="ingamepink.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />
