@@ -5,7 +5,8 @@
 #include <time.h>
 #include <math.h>
 #include <string>
-
+#include<windows.h>
+#include "them1.h"
 struct Block {
     double x;
     double y;
@@ -24,6 +25,7 @@ struct drawnguoichoi {
     SDL_Color coloring;
 
 };
+
 //--------------------------
 ///cửa sổ terminal
 struct State {
@@ -38,6 +40,7 @@ struct State {
 
     drawnguoichoi PLAYER;
     Block danban;
+    Block timeleft;
     bool bantrung;
 };
 ///-----------------------------------

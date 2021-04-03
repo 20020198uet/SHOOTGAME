@@ -1,4 +1,5 @@
 #include "ingame.h"
+#include "them1.h"
 /// vẽ , tạo khối
 void draw_block(SDL_Renderer *rend, Block &b, int red, int green, int blue, int alpha) {
     int x = static_cast<int>(b.x - b.size);
@@ -13,8 +14,16 @@ void quitSDL(SDL_Window* window, SDL_Renderer* renderer){
     SDL_DestroyWindow(window);
     SDL_Quit();
 }
-///-----------------------------------------------
+///----------------------------------------------
 void render(SDL_Renderer *rend, State &s,int coloring) {
+
+   // SDL_Surface* tempSurface ;
+
+
+
+ //   SDL_BlitSurface(tempSurface, NULL ,screen, NULL );
+
+
     SDL_SetRenderDrawColor(rend, 0, 70, 130, 255);
     SDL_RenderClear(rend);///tach dan ban khoi keo dai
 
@@ -30,7 +39,9 @@ void render(SDL_Renderer *rend, State &s,int coloring) {
         }
     }
 
-
+    for(int i = 0; i < 100; i++){
+                draw_block(rend, s.timeleft,0 , 0, 0, 255);
+    }
     /// Player
     if(coloring == 0) draw_block(rend, s.PLAYER.b, 0, 153 , 255 , 255);
 
@@ -45,7 +56,7 @@ void render(SDL_Renderer *rend, State &s,int coloring) {
         SDL_SetRenderDrawColor(rend, 240, 170, 0, 200);
         SDL_RenderFillRect(rend, &r);
     }
-
+//        tempSurface = SDL_LoadBMP("blue_player.bmp");
     // Update the screen
     SDL_RenderPresent(rend);
 }
@@ -92,7 +103,6 @@ bool collide(const Block &b1, const Block &b2) {
     return
         (abs(b1.x - b2.x) < b1.size + b2.size) && (abs(b1.y - b2.y) < b1.size + b2.size);
 }
-
 ///---------------------------------------------
 void update_state(State &s, double dt) {
     /// đạn bắn
@@ -118,15 +128,13 @@ void update_state(State &s, double dt) {
     bool enemies_are_dead = true;
 
     for (int i=0; i < s.N; i++) {
-        if (s.quandich[i].song) {
+        if (s.quandich[i].song){
 
-            if (s.quandich[i].chet) {
+            if (s.quandich[i].chet){
                 /// ban chet quan dich
                 s.quandich[i].b.y += 0.5 ;
 
             }
-
-
             /// neu trung dan
             if ( collide (s.quandich[i].b, s.danban) ) {
                 if ( !s.quandich[i].chet ){
@@ -137,7 +145,6 @@ void update_state(State &s, double dt) {
                 s.danban.y = s.h*2;//dan bien mat
             }
             enemies_are_dead = false;
-
         }
     }
 
@@ -154,7 +161,7 @@ void update_state(State &s, double dt) {
     }
 
 }
-///-----------------------------------------------
+///=======================================
 void run(SDL_Renderer *renderer, State &s, int x ) {
 
     bool keep_running = true;
@@ -175,6 +182,7 @@ void run(SDL_Renderer *renderer, State &s, int x ) {
                 }
             }
         }
+
         const Uint8 *keyboard_state = SDL_GetKeyboardState(NULL);
         /// sang phải
         if (keyboard_state[SDL_SCANCODE_RIGHT]&&s.PLAYER.b.x <= 800) {
@@ -205,9 +213,12 @@ void run(SDL_Renderer *renderer, State &s, int x ) {
         /// vẽ
         render(renderer, s,x);
 
+
+
+
+
         SDL_Delay(2);
 
     }
 }
-
 
