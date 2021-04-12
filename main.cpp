@@ -17,11 +17,6 @@ int main(int argc, char* args[]) {
     State s;
     init_state(s, 0);
 
-
-
-
-
-
 	bool isRunning = true;
 	//initializes  the subsystems
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
@@ -64,7 +59,7 @@ int main(int argc, char* args[]) {
 	desRect.h = sourceRect.h;
 
 	//set background color
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	//SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
 	int coloring = 0;
 
@@ -295,6 +290,7 @@ int main(int argc, char* args[]) {
 	//set background color
 	//SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     //SDL_RenderClear(renderer);///tach dan ban khoi keo dai
+
 
     run(renderer, s,coloring);
 

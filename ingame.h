@@ -52,9 +52,9 @@ void init_state(State &s, int stage);
 //-------------------------------
 void draw_block(SDL_Renderer *r, Block &b);
 //----------------------------------
-void render(SDL_Renderer *renderer, State &s);
+void render(SDL_Renderer *rend, State &s,int coloring,SDL_Texture *texture,SDL_Surface *image);
 //-----------------------------------
-void run(SDL_Renderer *renderer, State &s, int coloring);
+void run(SDL_Renderer *renderer, State &s, int x);
 //-------------------------------------
 void update_state(State &s, double dt);
 ///-------------------------------

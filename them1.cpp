@@ -17,7 +17,6 @@ void draw(int n, double x, double y, double size, SDL_Renderer* renderer) {
 
     draw(n-1, x + size/2, y + size/2, size/ratio, renderer);    // upper right
 
-
 }
 ///------------
 void drawSquare(double x, double y, double size, SDL_Renderer* renderer) {
