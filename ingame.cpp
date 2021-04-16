@@ -36,20 +36,17 @@ void init_state(State &s, int stage) {
     }
 
     int enemy_size = 20;
-    int ww = 8; // so quan dich hang ngang
+    int ww = 5; // so quan dich hang ngang
     int hh = 2; // so quan dich hang doc
     for(int i = 0 ;i < ww; ++i)
     for(int j = 0;j < hh; ++j){
                 int index = i + j*ww;
                 s.quandich[index].song = true;
                 s.quandich[index].chet = false;
-                s.quandich[index].b.x =  i*60 + 100;
-                s.quandich[index].b.y =  j*60 + 100;
+                s.quandich[index].b.x =  i*150 + 100;
+                s.quandich[index].b.y =  j*180 + 100;
 
-                ///rand kích thc sau mỗi level
-                int size = enemy_size - (rand()%(stage + 1));
-                if (size < enemy_size / 2) size = enemy_size / 2;
-                s.quandich[index].b.size = size;
+                s.quandich[index].b.size = 60;
     }
 }
 /// hàm kiểm tra chạm nhau
@@ -57,7 +54,7 @@ bool collide(const Block &b1, const Block &b2) {
     return  (abs(b1.x - b2.x) < b1.size + b2.size) && (abs(b1.y - b2.y) < b1.size + b2.size);
 }
 ///---------------------------------------------
-void update_state(State &s, double dt) {
+void update_state(State &s, double dt){
     /// đạn bắn
     if (!s.bantrung) {
         s.danban.y -= 100.0 * dt;
@@ -68,13 +65,12 @@ void update_state(State &s, double dt) {
     }
 
     ///di chuyển quân địch - crazy movement
-
     for (int i=0; i < s.N; i++) {
         if (s.quandich[i].song){
 
             if (s.quandich[i].chet){
                 /// ban chet quan dich
-                s.quandich[i].b.y += 10.0 ;
+                s.quandich[i].b.y += 1.0 ;
             }
             /// neu trung dan
             if ( collide (s.quandich[i].b, s.danban) ) {
@@ -89,30 +85,203 @@ void update_state(State &s, double dt) {
     }
 }
 ///----------------------------------------------
-void render(SDL_Renderer *rend, State &s, int coloring, SDL_Texture *texture, SDL_Surface *image) {
+void render(SDL_Renderer *rend, State &s, int coloring, SDL_Texture *texture
+            ,SDL_Texture *texture_plane,SDL_Texture *texture_bullet,SDL_Texture *texture_00,
+            SDL_Texture *texture_11,SDL_Texture *texture_22,SDL_Texture *texture_33,SDL_Texture *texture_44,
+            SDL_Texture *texture_55,SDL_Texture *texture_66,SDL_Texture *texture_77,SDL_Texture *texture_88,
+            SDL_Texture *texture_99,SDL_Texture *texture_death) {
 
     SDL_RenderPresent(rend);
     SDL_RenderCopy(rend, texture, NULL, NULL);
 
+    SDL_Rect sourceRect;
+	SDL_Rect desRect;
+    sourceRect.x = 0;
+    sourceRect.y = 0;
+    sourceRect.w = 100 ;
+    sourceRect.h = 130 ;
+
+    desRect.x = s.PLAYER.b.x-30;
+    desRect.y = s.PLAYER.b.y-30;
+    desRect.w = 130;
+    desRect.h = 150;
+    SDL_RenderCopy(rend, texture_plane, &sourceRect,&desRect);
 
     /// Quan dich
+    SDL_Rect sourceRect00,sourceRect11,sourceRect22,sourceRect33,sourceRect44,sourceRect55,sourceRect66,sourceRect77,sourceRect88,sourceRect99,sourceRectdeath,sourceRect2;
+	SDL_Rect desRect00,desRect11,desRect22,desRect33,desRect44,desRect55,desRect66,desRect77,desRect88,desRect99,desRect2,desRectdeath;
     for(int i = 0; i < s.N; i++){
         if (s.quandich[i].song){
             if (s.quandich[i].chet){
-                draw_block(rend, s.quandich[i].b, 0, 0, 0, 255);
+                    sourceRectdeath.x = 0;
+                    sourceRectdeath.y = 0;
+                    sourceRectdeath.w = 120 ;
+                    sourceRectdeath.h = 120;
+
+                    desRectdeath.x = s.quandich[i].b.x - 40;
+                    desRectdeath.y = s.quandich[i].b.y - 40;
+                    desRectdeath.w = 60;
+                    desRectdeath.h = 120;
+                    SDL_RenderCopy(rend, texture_death, &sourceRectdeath,&desRectdeath);
             }
             else
-                draw_block(rend, s.quandich[i].b, 0, 255, 0, 0);
+                {
+                    if(i == 0){
+                        sourceRect00.x = 0;
+                        sourceRect00.y = 0;
+                        sourceRect00.w = 120 ;
+                        sourceRect00.h = 120 ;
+
+                        desRect00.x = s.quandich[i].b.x - 40;
+                        desRect00.y = s.quandich[i].b.y - 40;
+                        desRect00.w = 80;
+                        desRect00.h = 150;
+
+                        SDL_RenderCopy(rend, texture_00, &sourceRect00,&desRect00);
+                }
+                if(i == 1){
+
+                        sourceRect11.x = 0;
+                        sourceRect11.y = 0;
+                        sourceRect11.w = 120 ;
+                        sourceRect11.h = 120 ;
+
+                        desRect11.x = s.quandich[i].b.x - 40;
+                        desRect11.y = s.quandich[i].b.y - 40;
+                        desRect11.w = 80;
+                        desRect11.h = 150;
+
+                        SDL_RenderCopy(rend, texture_11, &sourceRect11,&desRect11);
+                }
+                if(i == 2){
+
+                        sourceRect22.x = 0;
+                        sourceRect22.y = 0;
+                        sourceRect22.w = 120 ;
+                        sourceRect22.h = 120 ;
+
+                        desRect22.x = s.quandich[i].b.x - 40;
+                        desRect22.y = s.quandich[i].b.y - 40;
+                        desRect22.w = 80;
+                        desRect22.h = 150;
+
+                        SDL_RenderCopy(rend, texture_22, &sourceRect22,&desRect22);
+                }
+                if(i == 3){
+
+                        sourceRect33.x = 0;
+                        sourceRect33.y = 0;
+                        sourceRect33.w = 120 ;
+                        sourceRect33.h = 120 ;
+
+                        desRect33.x = s.quandich[i].b.x - 40;
+                        desRect33.y = s.quandich[i].b.y - 40;
+                        desRect33.w = 80;
+                        desRect33.h = 150;
+
+                        SDL_RenderCopy(rend, texture_33, &sourceRect33,&desRect33);
+                }
+                if(i == 5){
+
+                        sourceRect55.x = 0;
+                        sourceRect55.y = 0;
+                        sourceRect55.w = 120 ;
+                        sourceRect55.h = 120 ;
+
+                        desRect55.x = s.quandich[i].b.x - 40;
+                        desRect55.y = s.quandich[i].b.y - 40;
+                        desRect55.w = 80;
+                        desRect55.h = 150;
+
+                        SDL_RenderCopy(rend, texture_55, &sourceRect55,&desRect55);
+                }
+                if(i == 4){
+
+                        sourceRect44.x = 0;
+                        sourceRect44.y = 0;
+                        sourceRect44.w = 120 ;
+                        sourceRect44.h = 120 ;
+
+                        desRect44.x = s.quandich[i].b.x - 40;
+                        desRect44.y = s.quandich[i].b.y - 40;
+                        desRect44.w = 80;
+                        desRect44.h = 150;
+
+                        SDL_RenderCopy(rend, texture_44, &sourceRect44,&desRect44);
+                }
+                if(i == 6){
+
+                        sourceRect66.x = 0;
+                        sourceRect66.y = 0;
+                        sourceRect66.w = 120 ;
+                        sourceRect66.h = 120 ;
+
+                        desRect66.x = s.quandich[i].b.x - 40;
+                        desRect66.y = s.quandich[i].b.y - 40;
+                        desRect66.w = 80;
+                        desRect66.h = 150;
+
+                        SDL_RenderCopy(rend, texture_66, &sourceRect66,&desRect66);
+                }
+                if(i == 7){
+
+                        sourceRect77.x = 0;
+                        sourceRect77.y = 0;
+                        sourceRect77.w = 120 ;
+                        sourceRect77.h = 120 ;
+
+                        desRect77.x = s.quandich[i].b.x - 40;
+                        desRect77.y = s.quandich[i].b.y - 40;
+                        desRect77.w = 80;
+                        desRect77.h = 150;
+
+                        SDL_RenderCopy(rend, texture_77, &sourceRect77,&desRect77);
+                }
+                if(i == 8){
+
+                        sourceRect88.x = 0;
+                        sourceRect88.y = 0;
+                        sourceRect88.w = 120 ;
+                        sourceRect88.h = 120 ;
+
+                        desRect88.x = s.quandich[i].b.x - 40;
+                        desRect88.y = s.quandich[i].b.y - 40;
+                        desRect88.w = 80;
+                        desRect88.h = 150;
+
+                        SDL_RenderCopy(rend, texture_88, &sourceRect88,&desRect88);
+                }
+                if(i == 9){
+
+                        sourceRect99.x = 0;
+                        sourceRect99.y = 0;
+                        sourceRect99.w = 120 ;
+                        sourceRect99.h = 120 ;
+
+                        desRect99.x = s.quandich[i].b.x - 40;
+                        desRect99.y = s.quandich[i].b.y - 40;
+                        desRect99.w = 80;
+                        desRect99.h = 150;
+
+                        SDL_RenderCopy(rend, texture_99, &sourceRect99,&desRect99);
+                }
+                }
         }
     }
 
-    /// Player
-    if(coloring == 0) draw_block(rend, s.PLAYER.b, 0, 153 , 255 , 255);
 
-    else draw_block(rend, s.PLAYER.b, 254 , 6 , 145 ,255);
 
     /// Bullet
-    draw_block(rend, s.danban, 255, 255, 0, 0);
+    sourceRect2.x = 0;
+    sourceRect2.y = 0;
+    sourceRect2.w = 60 ;
+    sourceRect2.h = 60 ;
+
+    desRect2.x = s.danban.x - 20;
+    desRect2.y = s.danban.y - 20;
+    desRect2.w = 60;
+    desRect2.h = 40;
+    SDL_RenderCopy(rend, texture_bullet, &sourceRect2,&desRect2);
 
     // Update the screen
     SDL_RenderPresent(rend);
@@ -125,6 +294,44 @@ void run(SDL_Renderer *renderer, State &s, int x ){
     SDL_Surface * image = SDL_LoadBMP("background.bmp");
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
 
+    SDL_Surface * plane = SDL_LoadBMP("thanos.bmp");
+    SDL_Texture* texture_plane = SDL_CreateTextureFromSurface(renderer, plane);
+
+    SDL_Surface * death = SDL_LoadBMP("death.bmp");
+    SDL_Texture* texture_death = SDL_CreateTextureFromSurface(renderer, death);
+
+    SDL_Surface * bullet = SDL_LoadBMP("bullet.bmp");
+    SDL_Texture* texture_bullet = SDL_CreateTextureFromSurface(renderer, bullet);
+
+    SDL_Surface * image00 = SDL_LoadBMP("00.bmp");
+    SDL_Texture* texture_00 = SDL_CreateTextureFromSurface(renderer, image00);
+
+    SDL_Surface * image11 = SDL_LoadBMP("11.bmp");
+    SDL_Texture* texture_11 = SDL_CreateTextureFromSurface(renderer, image11);
+
+    SDL_Surface * image22 = SDL_LoadBMP("22.bmp");
+    SDL_Texture* texture_22 = SDL_CreateTextureFromSurface(renderer, image22);
+
+    SDL_Surface * image33 = SDL_LoadBMP("33.bmp");
+    SDL_Texture* texture_33 = SDL_CreateTextureFromSurface(renderer, image33);
+
+    SDL_Surface * image44 = SDL_LoadBMP("44.bmp");
+    SDL_Texture* texture_44 = SDL_CreateTextureFromSurface(renderer, image44);
+
+    SDL_Surface * image55 = SDL_LoadBMP("55.bmp");
+    SDL_Texture* texture_55 = SDL_CreateTextureFromSurface(renderer, image55);
+
+    SDL_Surface * image66 = SDL_LoadBMP("66.bmp");
+    SDL_Texture* texture_66 = SDL_CreateTextureFromSurface(renderer, image66);
+
+    SDL_Surface * image77 = SDL_LoadBMP("77.bmp");
+    SDL_Texture* texture_77 = SDL_CreateTextureFromSurface(renderer, image77);
+
+    SDL_Surface * image88 = SDL_LoadBMP("88.bmp");
+    SDL_Texture* texture_88 = SDL_CreateTextureFromSurface(renderer, image88);
+
+    SDL_Surface * image99 = SDL_LoadBMP("99.bmp");
+    SDL_Texture* texture_99 = SDL_CreateTextureFromSurface(renderer, image99);
 
     bool keep_running = true;
     while (keep_running){
@@ -159,7 +366,7 @@ void run(SDL_Renderer *renderer, State &s, int x ){
             s.PLAYER.b.y -= dt * 100.0;
         }
         /// xuong duoi
-        if (keyboard_state[SDL_SCANCODE_DOWN]) {
+        if (keyboard_state[SDL_SCANCODE_DOWN]){
             s.PLAYER.b.y += dt * 100.0;
         }
         /// BẮN
@@ -173,7 +380,8 @@ void run(SDL_Renderer *renderer, State &s, int x ){
         update_state(s, dt);
 
         /// vẽ
-        render(renderer,s,x,texture,image);
+        render(renderer,s,x,texture,texture_plane,texture_bullet,texture_00,texture_11,texture_22
+               ,texture_33,texture_44,texture_55,texture_66,texture_77,texture_88,texture_99,texture_death);
 
         SDL_Delay(2);
     }

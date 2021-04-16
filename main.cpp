@@ -25,7 +25,7 @@ int main(int argc, char* args[]) {
 		return -1;
 	}
 	//Create window
-	window = SDL_CreateWindow("HUY hai huoc ", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,1300, 750, SDL_WINDOW_SHOWN);
+	window = SDL_CreateWindow("HUY hai huoc ", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,1330, 720, SDL_WINDOW_SHOWN);
 	if (window == NULL)
 	{
 		printf("Could not create window %s", SDL_GetError());
@@ -76,75 +76,45 @@ int main(int argc, char* args[]) {
 			{
 				//User - requested quit
 				case SDL_KEYDOWN:
+				    if (mainEvent.key.keysym.sym == SDLK_i){
+                            tempSurface = SDL_LoadBMP("instruction.bmp");
+                            //create a texutre from surface
+                            texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
+                            //free surface
+                            SDL_FreeSurface(tempSurface);
 
+                            SDL_QueryTexture(texture, NULL, NULL, &sourceRect.w, &sourceRect.h);
+
+                            sourceRect.x = 0;
+                            sourceRect.y = 0;
+                            sourceRect.w = sourceRect.w ;
+                            sourceRect.h = sourceRect.h ;
+
+                            desRect.x = 0;
+                            desRect.y = 0;
+                            desRect.w = sourceRect.w;
+                            desRect.h = sourceRect.h;
+				    }
+				    if (mainEvent.key.keysym.sym == SDLK_BACKSPACE){
+                            tempSurface = SDL_LoadBMP("menuchatluong.bmp");
+                            //create a texutre from surface
+                            texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
+                            //free surface
+                            SDL_FreeSurface(tempSurface);
+
+                            SDL_QueryTexture(texture, NULL, NULL, &sourceRect.w, &sourceRect.h);
+
+                            sourceRect.x = 0;
+                            sourceRect.y = 0;
+                            sourceRect.w = sourceRect.w ;
+                            sourceRect.h = sourceRect.h ;
+
+                            desRect.x = 0;
+                            desRect.y = 0;
+                            desRect.w = sourceRect.w;
+                            desRect.h = sourceRect.h;
+				    }
                     if (mainEvent.key.keysym.sym == SDLK_r){
-                        //create a tempSurface
-                        tempSurface = SDL_LoadBMP("blue_player2.bmp");
-                        coloring = 0;
-                        //create a texutre from surface
-                        texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
-                        //free surface
-                        SDL_FreeSurface(tempSurface);
-
-                        SDL_QueryTexture(texture, NULL, NULL, &sourceRect.w, &sourceRect.h);
-
-                        sourceRect.x = 0;
-                        sourceRect.y = 0;
-                        sourceRect.w = sourceRect.w ;
-                        sourceRect.h = sourceRect.h ;
-
-                        desRect.x = 0;
-                        desRect.y = 0;
-                        desRect.w = sourceRect.w;
-                        desRect.h = sourceRect.h;
-
-                    }
-                    if (mainEvent.key.keysym.sym == SDLK_RIGHT){
-                        //create a tempSurface
-                        tempSurface = SDL_LoadBMP("pink_player2.bmp");
-
-                        coloring = 1;
-
-                        //create a texutre from surface
-                        texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
-                        //free surface
-                        SDL_FreeSurface(tempSurface);
-
-                        SDL_QueryTexture(texture, NULL, NULL, &sourceRect.w, &sourceRect.h);
-
-                        sourceRect.x = 0;
-                        sourceRect.y = 0;
-                        sourceRect.w = sourceRect.w ;
-                        sourceRect.h = sourceRect.h ;
-
-                        desRect.x = 0;
-                        desRect.y = 0;
-                        desRect.w = sourceRect.w;
-                        desRect.h = sourceRect.h;
-
-                    }
-                    if (mainEvent.key.keysym.sym == SDLK_LEFT){
-                        //create a tempSurface
-                        tempSurface = SDL_LoadBMP("blue_player2.bmp");
-                        coloring = 0;
-                        //create a texutre from surface
-                        texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
-                        //free surface
-                        SDL_FreeSurface(tempSurface);
-
-                        SDL_QueryTexture(texture, NULL, NULL, &sourceRect.w, &sourceRect.h);
-
-                        sourceRect.x = 0;
-                        sourceRect.y = 0;
-                        sourceRect.w = sourceRect.w ;
-                        sourceRect.h = sourceRect.h ;
-
-                        desRect.x = 0;
-                        desRect.y = 0;
-                        desRect.w = sourceRect.w;
-                        desRect.h = sourceRect.h;
-                    }
-                    if (mainEvent.key.keysym.sym == SDLK_f){
                                 isRunning = false;
                                 break;
                     }
@@ -161,7 +131,7 @@ int main(int argc, char* args[]) {
         }
 	}
 	///-------------------------------------------------------------------
-	/*tempSurface = SDL_LoadBMP("1111.bmp");
+	tempSurface = SDL_LoadBMP("1111.bmp");
 	//create a texutre from surface
 	texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
 	//free surface
@@ -181,7 +151,7 @@ int main(int argc, char* args[]) {
     SDL_RenderCopy(renderer, texture, &sourceRect, &desRect);
 		//draw to the screen
     SDL_RenderPresent(renderer);
-    SDL_Delay(900);
+    SDL_Delay(1500);
     tempSurface = SDL_LoadBMP("2222.bmp");
 	//create a texutre from surface
 	texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
@@ -202,7 +172,7 @@ int main(int argc, char* args[]) {
     SDL_RenderCopy(renderer, texture, &sourceRect, &desRect);
 		//draw to the screen
     SDL_RenderPresent(renderer);
-    SDL_Delay(900);
+    SDL_Delay(1500);
     tempSurface = SDL_LoadBMP("3333.bmp");
 	//create a texutre from surface
 	texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
@@ -224,73 +194,6 @@ int main(int argc, char* args[]) {
 		//draw to the screen
     SDL_RenderPresent(renderer);
     SDL_Delay(900);
-    tempSurface = SDL_LoadBMP("4444.bmp");
-	//create a texutre from surface
-	texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
-	//free surface
-	SDL_FreeSurface(tempSurface);
-
-	SDL_QueryTexture(texture, NULL, NULL, &sourceRect.w, &sourceRect.h);
-
-	sourceRect.x = 0;
-	sourceRect.y = 0;
-	sourceRect.w = sourceRect.w ;
-	sourceRect.h = sourceRect.h ;
-
-	desRect.x = 0;
-	desRect.y = 0;
-	desRect.w = sourceRect.w;
-	desRect.h = sourceRect.h;
-    SDL_RenderCopy(renderer, texture, &sourceRect, &desRect);
-		//draw to the screen
-    SDL_RenderPresent(renderer);
-    SDL_Delay(900);
-    tempSurface = SDL_LoadBMP("5555.bmp");
-	//create a texutre from surface
-	texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
-	//free surface
-	SDL_FreeSurface(tempSurface);
-
-	SDL_QueryTexture(texture, NULL, NULL, &sourceRect.w, &sourceRect.h);
-
-	sourceRect.x = 0;
-	sourceRect.y = 0;
-	sourceRect.w = sourceRect.w ;
-	sourceRect.h = sourceRect.h ;
-
-	desRect.x = 0;
-	desRect.y = 0;
-	desRect.w = sourceRect.w;
-	desRect.h = sourceRect.h;
-    SDL_RenderCopy(renderer, texture, &sourceRect, &desRect);
-		//draw to the screen
-    SDL_RenderPresent(renderer);
-    SDL_Delay(900);
-    tempSurface = SDL_LoadBMP("6666.bmp");
-	//create a texutre from surface
-	texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
-	//free surface
-	SDL_FreeSurface(tempSurface);
-
-	SDL_QueryTexture(texture, NULL, NULL, &sourceRect.w, &sourceRect.h);
-
-	sourceRect.x = 0;
-	sourceRect.y = 0;
-	sourceRect.w = sourceRect.w ;
-	sourceRect.h = sourceRect.h ;
-
-	desRect.x = 0;
-	desRect.y = 0;
-	desRect.w = sourceRect.w;
-	desRect.h = sourceRect.h;
-    SDL_RenderCopy(renderer, texture, &sourceRect, &desRect);
-		//draw to the screen
-    SDL_RenderPresent(renderer);
-    SDL_Delay(900);*/
-	//set background color
-	//SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    //SDL_RenderClear(renderer);///tach dan ban khoi keo dai
-
 
     run(renderer, s,coloring);
 

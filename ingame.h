@@ -22,8 +22,6 @@ struct kieuquandich {
 //--------------------------
 struct drawnguoichoi {
     Block b;
-    SDL_Color coloring;
-
 };
 
 //--------------------------
@@ -52,7 +50,7 @@ void init_state(State &s, int stage);
 //-------------------------------
 void draw_block(SDL_Renderer *r, Block &b);
 //----------------------------------
-void render(SDL_Renderer *rend, State &s,int coloring,SDL_Texture *texture,SDL_Surface *image);
+void render(SDL_Renderer *rend, State &s,int coloring, SDL_Texture *texture, SDL_Texture *texture_plane,SDL_Texture *texture_enemy);
 //-----------------------------------
 void run(SDL_Renderer *renderer, State &s, int x);
 //-------------------------------------
