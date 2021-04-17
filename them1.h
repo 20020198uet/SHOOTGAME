@@ -1,10 +1,8 @@
-#include <SDL.h>
-#include <SDL_image.h>
+#include <SDL_ttf.h>
 #include <iostream>
-#include<string.h>
 #include <time.h>
 #include <math.h>
-#include <string>
+#include <stdio.h>
 #include<windows.h>
 
 void drawSquare(double x, double y, double size, SDL_Renderer* renderer);

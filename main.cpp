@@ -12,7 +12,7 @@ int main(int argc, char* args[]) {
 	SDL_Event mainEvent;
 	SDL_Rect sourceRect;
 	SDL_Rect desRect;
-
+    TTF_Font* font = NULL;
 
     State s;
     init_state(s, 0);
@@ -131,12 +131,11 @@ int main(int argc, char* args[]) {
         }
 	}
 	///-------------------------------------------------------------------
-	tempSurface = SDL_LoadBMP("1111.bmp");
+	/*tempSurface = SDL_LoadBMP("1111.bmp");
 	//create a texutre from surface
 	texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
 	//free surface
 	SDL_FreeSurface(tempSurface);
-
 	SDL_QueryTexture(texture, NULL, NULL, &sourceRect.w, &sourceRect.h);
 
 	sourceRect.x = 0;
@@ -193,10 +192,10 @@ int main(int argc, char* args[]) {
     SDL_RenderCopy(renderer, texture, &sourceRect, &desRect);
 		//draw to the screen
     SDL_RenderPresent(renderer);
-    SDL_Delay(900);
+    SDL_Delay(900);*/
 
     run(renderer, s,coloring);
-
+    quitSDL(window,renderer);
 
 }
 ///---------------------------------------------

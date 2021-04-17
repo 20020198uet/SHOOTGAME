@@ -1,11 +1,9 @@
 #include <SDL.h>
 #include <SDL_image.h>
-#include <iostream>
-#include<string.h>
-#include <time.h>
-#include <math.h>
-#include <string>
+#include <string.h>
 #include<windows.h>
+#include<sstream>
+
 #include "them1.h"
 struct Block {
     double x;

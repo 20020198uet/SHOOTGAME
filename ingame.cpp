@@ -1,5 +1,6 @@
 #include "ingame.h"
 #include "them1.h"
+#include<sstream>
 /// vẽ , tạo khối
 
 void draw_block(SDL_Renderer *rend, Block &b, int red, int green, int blue, int alpha) {
@@ -67,7 +68,6 @@ void update_state(State &s, double dt){
     ///di chuyển quân địch - crazy movement
     for (int i=0; i < s.N; i++) {
         if (s.quandich[i].song){
-
             if (s.quandich[i].chet){
                 /// ban chet quan dich
                 s.quandich[i].b.y += 1.0 ;
@@ -84,12 +84,29 @@ void update_state(State &s, double dt){
         }
     }
 }
+///-------------------------------------------
+void timeleft(SDL_Renderer *rend,SDL_Texture* texture,TTF_Font *font,SDL_Rect srcRest,SDL_Rect desRect,std::string text){
+    SDL_RenderPresent(rend);
+    SDL_RenderCopy(rend, texture, &srcRest,&desRect);
+
+	TTF_SizeText(font, text.c_str(), &srcRest.w, &srcRest.h);
+	srcRest.x = 0;
+	srcRest.y =  0;
+
+	desRect.x = 890;
+	desRect.y = 10;
+
+	desRect.w = srcRest.w;
+	desRect.h = srcRest.h;
+    SDL_RenderCopy(rend, texture, &srcRest,&desRect);
+
+}
 ///----------------------------------------------
 void render(SDL_Renderer *rend, State &s, int coloring, SDL_Texture *texture
             ,SDL_Texture *texture_plane,SDL_Texture *texture_bullet,SDL_Texture *texture_00,
             SDL_Texture *texture_11,SDL_Texture *texture_22,SDL_Texture *texture_33,SDL_Texture *texture_44,
             SDL_Texture *texture_55,SDL_Texture *texture_66,SDL_Texture *texture_77,SDL_Texture *texture_88,
-            SDL_Texture *texture_99,SDL_Texture *texture_death) {
+            SDL_Texture *texture_99,SDL_Texture *texture_death){
 
     SDL_RenderPresent(rend);
     SDL_RenderCopy(rend, texture, NULL, NULL);
@@ -291,6 +308,13 @@ void render(SDL_Renderer *rend, State &s, int coloring, SDL_Texture *texture
 ///=======================================
 void run(SDL_Renderer *renderer, State &s, int x ){
 
+    ///TIMELEFT
+        SDL_Rect srcRest;
+        SDL_Rect desRect;
+        TTF_Font* font = NULL;
+
+    ///-------------------------------------
+
     SDL_Surface * image = SDL_LoadBMP("background.bmp");
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
 
@@ -362,11 +386,11 @@ void run(SDL_Renderer *renderer, State &s, int x ){
             s.PLAYER.b.x -= dt * 100.0;
         }
         /// len tren
-        if (keyboard_state[SDL_SCANCODE_UP]) {
+        if (keyboard_state[SDL_SCANCODE_UP]&&s.PLAYER.b.y >= 10) {
             s.PLAYER.b.y -= dt * 100.0;
         }
         /// xuong duoi
-        if (keyboard_state[SDL_SCANCODE_DOWN]){
+        if (keyboard_state[SDL_SCANCODE_DOWN]&&s.PLAYER.b.y <= 700){
             s.PLAYER.b.y += dt * 100.0;
         }
         /// BẮN
@@ -375,15 +399,27 @@ void run(SDL_Renderer *renderer, State &s, int x ){
             s.danban.x = s.PLAYER.b.x;
             s.danban.y = s.PLAYER.b.y - s.PLAYER.b.size;
         }
-
         /// cập nhật trạng thái
         update_state(s, dt);
 
         /// vẽ
-        render(renderer,s,x,texture,texture_plane,texture_bullet,texture_00,texture_11,texture_22
-               ,texture_33,texture_44,texture_55,texture_66,texture_77,texture_88,texture_99,texture_death);
+        if (TTF_Init() < 0)
+        {
+            SDL_Log("%s", TTF_GetError());
+        }
+        std::stringstream timeText;
+        timeText << "TIMELEFT  " << SDL_GetTicks() ;
+        std::string text =  timeText.str();
+        font = TTF_OpenFont("VeraMoBd.ttf", 35);
 
-        SDL_Delay(2);
+        SDL_Color fg = { 0, 102, 255};
+        SDL_Surface * surface_tl = TTF_RenderText_Solid(font, text.c_str(), fg);
+        SDL_Texture* texture_tl = SDL_CreateTextureFromSurface(renderer, surface_tl);
+        timeleft(renderer,texture_tl,font,srcRest,desRect,text);
+
+        render(renderer,s,x,texture,texture_plane,texture_bullet,texture_00,texture_11,texture_22,texture_33,texture_44,texture_55,texture_66,texture_77,texture_88,texture_99,texture_death);
+
     }
+
 }
 
