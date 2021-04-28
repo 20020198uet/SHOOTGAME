@@ -2,7 +2,6 @@
 #include "them1.h"
 #include<sstream>
 /// vẽ , tạo khối
-
 void draw_block(SDL_Renderer *rend, Block &b, int red, int green, int blue, int alpha) {
     int x = static_cast<int>(b.x - b.size);
     int y = static_cast<int>(b.y - b.size);
@@ -29,8 +28,6 @@ void init_state(State &s, int stage) {
     s.danban.size = 4;
     s.bantrung = true;
 
-    s.stage = stage;
-
     /// Enemies
     for (int i = 0; i < s.N; i++) {
         s.quandich[i].song = false;
@@ -44,8 +41,8 @@ void init_state(State &s, int stage) {
                 int index = i + j*ww;
                 s.quandich[index].song = true;
                 s.quandich[index].chet = false;
-                s.quandich[index].b.x =  i*150 + 100;
-                s.quandich[index].b.y =  j*180 + 100;
+                s.quandich[index].b.x =  i*180 + 100;
+                s.quandich[index].b.y =  j*200 + 100;
 
                 s.quandich[index].b.size = 60;
     }
@@ -55,10 +52,10 @@ bool collide(const Block &b1, const Block &b2) {
     return  (abs(b1.x - b2.x) < b1.size + b2.size) && (abs(b1.y - b2.y) < b1.size + b2.size);
 }
 ///---------------------------------------------
-void update_state(State &s, double dt){
+void update_state(State &s){
     /// đạn bắn
     if (!s.bantrung) {
-        s.danban.y -= 100.0 * dt;
+        s.danban.y -= 100.0 * 0.005;
         if (s.danban.y < 0) {
             s.bantrung = true;
             s.danban.y = s.h*2;
@@ -84,39 +81,37 @@ void update_state(State &s, double dt){
         }
     }
 }
+
 ///-------------------------------------------
-void timeleft(SDL_Renderer *rend,SDL_Texture* texture,TTF_Font *font,SDL_Rect srcRest,SDL_Rect desRect,std::string text){
-    SDL_RenderPresent(rend);
-    SDL_RenderCopy(rend, texture, &srcRest,&desRect);
+void timeleft(SDL_Renderer *rend,SDL_Texture* texture,TTF_Font *font,SDL_Rect srcRest,SDL_Rect desRectt,std::string text){
 
 	TTF_SizeText(font, text.c_str(), &srcRest.w, &srcRest.h);
 	srcRest.x = 0;
 	srcRest.y =  0;
 
-	desRect.x = 890;
-	desRect.y = 10;
+	desRectt.x = 1000;
+	desRectt.y = 80;
 
-	desRect.w = srcRest.w;
-	desRect.h = srcRest.h;
-    SDL_RenderCopy(rend, texture, &srcRest,&desRect);
+	desRectt.w = srcRest.w;
+	desRectt.h = srcRest.h;
+    SDL_RenderCopy(rend, texture, &srcRest,&desRectt);
 
 }
 ///----------------------------------------------
-void render(SDL_Renderer *rend, State &s, int coloring, SDL_Texture *texture
-            ,SDL_Texture *texture_plane,SDL_Texture *texture_bullet,SDL_Texture *texture_00,
-            SDL_Texture *texture_11,SDL_Texture *texture_22,SDL_Texture *texture_33,SDL_Texture *texture_44,
-            SDL_Texture *texture_55,SDL_Texture *texture_66,SDL_Texture *texture_77,SDL_Texture *texture_88,
-            SDL_Texture *texture_99,SDL_Texture *texture_death){
-
-    SDL_RenderPresent(rend);
-    SDL_RenderCopy(rend, texture, NULL, NULL);
+void render(SDL_Renderer *rend, State &s, SDL_Texture *texture
+            ,SDL_Texture *texture_plane,SDL_Texture *texture_bullet
+            ,SDL_Texture *texture_00,SDL_Texture *texture_11,SDL_Texture *texture_22,SDL_Texture *texture_33
+            ,SDL_Texture *texture_44,SDL_Texture *texture_55,SDL_Texture *texture_66,SDL_Texture *texture_77
+            ,SDL_Texture *texture_88,SDL_Texture *texture_99,SDL_Texture *texture_death
+            ,int nvkhong,int nvmot,int nvhai,int nvba,int nvbon,int nvnam
+            ,SDL_Texture *texture_0,SDL_Texture *texture_1,SDL_Texture *texture_2,SDL_Texture *texture_3,SDL_Texture *texture_4,SDL_Texture *texture_5){
 
     SDL_Rect sourceRect;
 	SDL_Rect desRect;
     sourceRect.x = 0;
     sourceRect.y = 0;
     sourceRect.w = 100 ;
-    sourceRect.h = 130 ;
+    sourceRect.h = 154 ;
 
     desRect.x = s.PLAYER.b.x-30;
     desRect.y = s.PLAYER.b.y-30;
@@ -130,16 +125,90 @@ void render(SDL_Renderer *rend, State &s, int coloring, SDL_Texture *texture
     for(int i = 0; i < s.N; i++){
         if (s.quandich[i].song){
             if (s.quandich[i].chet){
-                    sourceRectdeath.x = 0;
-                    sourceRectdeath.y = 0;
-                    sourceRectdeath.w = 120 ;
-                    sourceRectdeath.h = 120;
+                    if(i == nvkhong){
+                        sourceRectdeath.x = 0;
+                        sourceRectdeath.y = 0;
+                        sourceRectdeath.w = 120 ;
+                        sourceRectdeath.h = 120;
 
-                    desRectdeath.x = s.quandich[i].b.x - 40;
-                    desRectdeath.y = s.quandich[i].b.y - 40;
-                    desRectdeath.w = 60;
-                    desRectdeath.h = 120;
-                    SDL_RenderCopy(rend, texture_death, &sourceRectdeath,&desRectdeath);
+                        desRectdeath.x = s.quandich[i].b.x - 40;
+                        desRectdeath.y = s.quandich[i].b.y - 40;
+                        desRectdeath.w = 30;
+                        desRectdeath.h = 35;
+
+                        SDL_RenderCopy(rend, texture_0, &sourceRectdeath,&desRectdeath);
+
+                    }
+                    if(i == nvmot){
+                        sourceRectdeath.x = 0;
+                        sourceRectdeath.y = 0;
+                        sourceRectdeath.w = 120 ;
+                        sourceRectdeath.h = 120;
+
+                        desRectdeath.x = s.quandich[i].b.x - 40;
+                        desRectdeath.y = s.quandich[i].b.y - 40;
+                         desRectdeath.w = 30;
+                        desRectdeath.h = 35;
+
+                        SDL_RenderCopy(rend, texture_1, &sourceRectdeath,&desRectdeath);
+
+                    }
+                    if(i == nvhai){
+                        sourceRectdeath.x = 0;
+                        sourceRectdeath.y = 0;
+                        sourceRectdeath.w = 120 ;
+                        sourceRectdeath.h = 120;
+
+                        desRectdeath.x = s.quandich[i].b.x - 40;
+                        desRectdeath.y = s.quandich[i].b.y - 40;
+                         desRectdeath.w = 30;
+                        desRectdeath.h = 35;
+
+                        SDL_RenderCopy(rend, texture_2, &sourceRectdeath,&desRectdeath);
+
+                    }
+                    if(i == nvba){
+                        sourceRectdeath.x = 0;
+                        sourceRectdeath.y = 0;
+                        sourceRectdeath.w = 120 ;
+                        sourceRectdeath.h = 120;
+
+                        desRectdeath.x = s.quandich[i].b.x - 40;
+                        desRectdeath.y = s.quandich[i].b.y - 40;
+                        desRectdeath.w = 30;
+                        desRectdeath.h = 35;
+
+                        SDL_RenderCopy(rend, texture_3, &sourceRectdeath,&desRectdeath);
+
+                    }
+                    if(i == nvbon){
+                        sourceRectdeath.x = 0;
+                        sourceRectdeath.y = 0;
+                        sourceRectdeath.w = 120 ;
+                        sourceRectdeath.h = 120;
+
+                        desRectdeath.x = s.quandich[i].b.x - 40;
+                        desRectdeath.y = s.quandich[i].b.y - 40;
+                         desRectdeath.w = 30;
+                        desRectdeath.h = 35;
+
+                        SDL_RenderCopy(rend, texture_4, &sourceRectdeath,&desRectdeath);
+
+                    }
+                    if(i == nvnam){
+                        sourceRectdeath.x = 0;
+                        sourceRectdeath.y = 0;
+                        sourceRectdeath.w = 120 ;
+                        sourceRectdeath.h = 120;
+
+                        desRectdeath.x = s.quandich[i].b.x - 40;
+                        desRectdeath.y = s.quandich[i].b.y - 40;
+                         desRectdeath.w = 30;
+                        desRectdeath.h = 35;
+
+                        SDL_RenderCopy(rend, texture_5, &sourceRectdeath,&desRectdeath);
+
+                    }
             }
             else
                 {
@@ -286,8 +355,6 @@ void render(SDL_Renderer *rend, State &s, int coloring, SDL_Texture *texture
         }
     }
 
-
-
     /// Bullet
     sourceRect2.x = 0;
     sourceRect2.y = 0;
@@ -302,18 +369,43 @@ void render(SDL_Renderer *rend, State &s, int coloring, SDL_Texture *texture
 
     // Update the screen
     SDL_RenderPresent(rend);
+    SDL_RenderClear(rend);
+    SDL_RenderCopy(rend, texture, NULL, NULL);
 
-    //SDL_Delay(3000);
 }
-///=======================================
-void run(SDL_Renderer *renderer, State &s, int x ){
+///======================================= X : khong,mot,hai,ba,bon,nam :
+///                                            nhan vat thu X giu vien da nao do
+///                                             nvmot , nvhai,... van the nhung o dang int
+void run(SDL_Window *window,SDL_Renderer *renderer, State &s
+            ,int nvkhong,int nvmot,int nvhai,int nvba,int nvbon,int nvnam){
 
     ///TIMELEFT
+        unsigned int start = SDL_GetTicks();
         SDL_Rect srcRest;
-        SDL_Rect desRect;
+        SDL_Rect desRectt;
         TTF_Font* font = NULL;
 
-    ///-------------------------------------
+    ///---------------- 6 VIEN DA VO CUC -------------
+
+    SDL_Surface * image0 = SDL_LoadBMP("0.bmp");
+    SDL_Texture* texture_0 = SDL_CreateTextureFromSurface(renderer, image0);
+
+    SDL_Surface * image1 = SDL_LoadBMP("1.bmp");
+    SDL_Texture* texture_1 = SDL_CreateTextureFromSurface(renderer, image1);
+
+    SDL_Surface * image2 = SDL_LoadBMP("2.bmp");
+    SDL_Texture* texture_2 = SDL_CreateTextureFromSurface(renderer, image2);
+
+    SDL_Surface * image3 = SDL_LoadBMP("3.bmp");
+    SDL_Texture* texture_3 = SDL_CreateTextureFromSurface(renderer, image3);
+
+    SDL_Surface * image4 = SDL_LoadBMP("4.bmp");
+    SDL_Texture* texture_4 = SDL_CreateTextureFromSurface(renderer, image4);
+
+    SDL_Surface * image5 = SDL_LoadBMP("5.bmp");
+    SDL_Texture* texture_5 = SDL_CreateTextureFromSurface(renderer, image5);
+
+    ///==================== AVENGERS =====================
 
     SDL_Surface * image = SDL_LoadBMP("background.bmp");
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
@@ -379,47 +471,57 @@ void run(SDL_Renderer *renderer, State &s, int x ){
         const Uint8 *keyboard_state = SDL_GetKeyboardState(NULL);
         /// sang phải
         if (keyboard_state[SDL_SCANCODE_RIGHT]&&s.PLAYER.b.x <= 800) {
-            s.PLAYER.b.x += dt * 100.0;
+            s.PLAYER.b.x += dt * 50.0;
         }
         /// sang trái
         if (keyboard_state[SDL_SCANCODE_LEFT]&&s.PLAYER.b.x >= 10) {
-            s.PLAYER.b.x -= dt * 100.0;
+            s.PLAYER.b.x -= dt * 50.0;
         }
         /// len tren
         if (keyboard_state[SDL_SCANCODE_UP]&&s.PLAYER.b.y >= 10) {
-            s.PLAYER.b.y -= dt * 100.0;
+            s.PLAYER.b.y -= dt * 50.0;
         }
         /// xuong duoi
         if (keyboard_state[SDL_SCANCODE_DOWN]&&s.PLAYER.b.y <= 700){
-            s.PLAYER.b.y += dt * 100.0;
+            s.PLAYER.b.y += dt * 50.0;
         }
         /// BẮN
         if (keyboard_state[SDL_SCANCODE_SPACE]) {
             s.bantrung = false;
             s.danban.x = s.PLAYER.b.x;
-            s.danban.y = s.PLAYER.b.y - s.PLAYER.b.size;
+            s.danban.y = s.PLAYER.b.y ;
         }
         /// cập nhật trạng thái
-        update_state(s, dt);
+        update_state(s);
 
-        /// vẽ
+        /// TIME LEFT
         if (TTF_Init() < 0)
         {
             SDL_Log("%s", TTF_GetError());
         }
         std::stringstream timeText;
-        timeText << "TIMELEFT  " << SDL_GetTicks() ;
+        timeText << "" << 8 - ((SDL_GetTicks() - start)/1000 ) ;
         std::string text =  timeText.str();
-        font = TTF_OpenFont("VeraMoBd.ttf", 35);
 
-        SDL_Color fg = { 0, 102, 255};
+        /// === IF YOU THUA ===================
+        if(text == "0"||(s.quandich[nvkhong].chet&&s.quandich[nvmot].chet&&s.quandich[nvhai].chet&&s.quandich[nvba].chet&&s.quandich[nvbon].chet&&s.quandich[nvnam].chet)){
+                    keep_running = false;
+        }
+        font = TTF_OpenFont("VeraMoBd.ttf", 100);
+        ///------------------------------------
+        SDL_Color fg = { 231, 76, 60 };
         SDL_Surface * surface_tl = TTF_RenderText_Solid(font, text.c_str(), fg);
         SDL_Texture* texture_tl = SDL_CreateTextureFromSurface(renderer, surface_tl);
-        timeleft(renderer,texture_tl,font,srcRest,desRect,text);
 
-        render(renderer,s,x,texture,texture_plane,texture_bullet,texture_00,texture_11,texture_22,texture_33,texture_44,texture_55,texture_66,texture_77,texture_88,texture_99,texture_death);
+        timeleft(renderer,texture_tl,font,srcRest,desRectt,text);
 
+        /// === EVERYTHINGS CÒN LẠI =======================
+        render(renderer,s,texture,texture_plane,texture_bullet
+               ,texture_00,texture_11,texture_22,texture_33,texture_44,texture_55,texture_66,texture_77,texture_88,texture_99,texture_death
+               ,nvkhong,nvmot,nvhai,nvba,nvbon,nvnam
+               ,texture_0,texture_1,texture_2,texture_3,texture_4,texture_5);
+        ///------------------------------------------------
     }
-
 }
+
 

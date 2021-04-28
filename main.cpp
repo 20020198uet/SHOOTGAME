@@ -1,9 +1,22 @@
 #include "ingame.h"
 #include "them1.h"
+#include <time.h>
 
 int main(int argc, char* args[]) {
 
+    /// RANDOM 6 VIEN DA VO CUC
+    srand(time(0));
+    std::string random = "0123456789",anhthu[12];
+    int nhanvat[12];
+    int dem = 0 ,check = 0;
+    while(dem < 6){
+        int i = rand() % random.length();
+        nhanvat[dem] = int(random[i]) - 48;
+        random.erase(i,1);
+        ++dem;
+    }
 
+    ///INIT
 
 	SDL_Window* window = NULL;
 	SDL_Renderer* renderer = NULL;
@@ -25,7 +38,7 @@ int main(int argc, char* args[]) {
 		return -1;
 	}
 	//Create window
-	window = SDL_CreateWindow("HUY hai huoc ", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,1330, 720, SDL_WINDOW_SHOWN);
+	window = SDL_CreateWindow("HUY hai huoc ", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,1320, 720, SDL_WINDOW_SHOWN);
 	if (window == NULL)
 	{
 		printf("Could not create window %s", SDL_GetError());
@@ -58,17 +71,11 @@ int main(int argc, char* args[]) {
 	desRect.w = sourceRect.w;
 	desRect.h = sourceRect.h;
 
-	//set background color
-	//SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-
-	int coloring = 0;
-
-	//main loop
+	///======================================================================VAO MENU
 	isRunning = true;
 	while (isRunning)
 	{
-		// clear the window to black
-		//SDL_RenderClear(renderer);
+
 		//main event
 		while (SDL_PollEvent(&mainEvent))
 		{
@@ -114,7 +121,7 @@ int main(int argc, char* args[]) {
                             desRect.w = sourceRect.w;
                             desRect.h = sourceRect.h;
 				    }
-                    if (mainEvent.key.keysym.sym == SDLK_r){
+                    if (mainEvent.key.keysym.sym == SDLK_s){
                                 isRunning = false;
                                 break;
                     }
@@ -131,7 +138,8 @@ int main(int argc, char* args[]) {
         }
 	}
 	///-------------------------------------------------------------------
-	/*tempSurface = SDL_LoadBMP("1111.bmp");
+	///LOADING 1 CHUT for fun
+	tempSurface = SDL_LoadBMP("1111.bmp");
 	//create a texutre from surface
 	texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
 	//free surface
@@ -150,7 +158,7 @@ int main(int argc, char* args[]) {
     SDL_RenderCopy(renderer, texture, &sourceRect, &desRect);
 		//draw to the screen
     SDL_RenderPresent(renderer);
-    SDL_Delay(1500);
+    SDL_Delay(500);
     tempSurface = SDL_LoadBMP("2222.bmp");
 	//create a texutre from surface
 	texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
@@ -171,7 +179,7 @@ int main(int argc, char* args[]) {
     SDL_RenderCopy(renderer, texture, &sourceRect, &desRect);
 		//draw to the screen
     SDL_RenderPresent(renderer);
-    SDL_Delay(1500);
+    SDL_Delay(500);
     tempSurface = SDL_LoadBMP("3333.bmp");
 	//create a texutre from surface
 	texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
@@ -192,10 +200,31 @@ int main(int argc, char* args[]) {
     SDL_RenderCopy(renderer, texture, &sourceRect, &desRect);
 		//draw to the screen
     SDL_RenderPresent(renderer);
-    SDL_Delay(900);*/
+    SDL_Delay(500);
+    /// GAME START
+    run(window,renderer,s
+        ,nhanvat[0],nhanvat[1],nhanvat[2],nhanvat[3],nhanvat[4],nhanvat[5]);
 
-    run(renderer, s,coloring);
-    quitSDL(window,renderer);
+    ///END
+
+    if(s.quandich[nhanvat[0]].chet&&s.quandich[nhanvat[1]].chet&&
+       s.quandich[nhanvat[2]].chet&&s.quandich[nhanvat[3]].chet&&s.quandich[nhanvat[4]].chet&&s.quandich[nhanvat[5]].chet){
+        SDL_Surface * image_thanos = SDL_LoadBMP("thanos_win.bmp");
+        SDL_Texture* texture_thanos = SDL_CreateTextureFromSurface(renderer, image_thanos);
+        SDL_RenderCopy(renderer, texture_thanos, NULL, NULL);
+        SDL_RenderPresent(renderer);
+        SDL_RenderClear(renderer);
+        SDL_Delay(5000);
+        quitSDL(window,renderer);
+    }
+
+        SDL_Surface * image_thanos2 = SDL_LoadBMP("thanos_death.bmp");
+        SDL_Texture* texture_thanos2 = SDL_CreateTextureFromSurface(renderer, image_thanos2);
+        SDL_RenderCopy(renderer, texture_thanos2, NULL, NULL);
+        SDL_RenderPresent(renderer);
+        SDL_RenderClear(renderer);
+        SDL_Delay(5000);
+        quitSDL(window,renderer);
 
 }
 ///---------------------------------------------
