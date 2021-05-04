@@ -500,7 +500,7 @@ void run(SDL_Window *window,SDL_Renderer *renderer, State &s
             SDL_Log("%s", TTF_GetError());
         }
         std::stringstream timeText;
-        timeText << "" << 8 - ((SDL_GetTicks() - start)/1000 ) ;
+        timeText << "" << 20 - ((SDL_GetTicks() - start)/1000 ) ;
         std::string text =  timeText.str();
 
         /// === IF YOU THUA ===================

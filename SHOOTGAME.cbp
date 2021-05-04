@@ -35,7 +35,6 @@
 		<Unit filename="ingame.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="them1.cpp" />
-		<Unit filename="them1.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
