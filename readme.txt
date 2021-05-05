@@ -12,4 +12,5 @@ LAZYFOO , về phần lấy random viên đá mình tự code .
 - Tất cả đều thao tác trên bàn phím
 - Mình có 1 tip cho mọi người là di chuyển thật gần , nếu may mắn , dùng 1 viên đạn sẽ kết liễu 
 được 2 heros cùng lúc.
++ Point tự chấm 7-8đ 
 Mình xin kết thúc tại đây , cảm ơn mọi người đã quan tâm ạ!!
